@@ -1,18 +1,28 @@
 <template>
-  <div class="home">
-    <img alt="Vue logo" src="../assets/logo.png">
-    <HelloWorld msg="Welcome to Your Vue.js App"/>
+  <div class="full d-flex align-center">
+    <v-container fill-height>
+      <v-row justify="center">
+        <v-col align="center" cols="12" sm="12" md="10" lg="8" xl="6">
+          <sign-in-card />
+        </v-col>
+      </v-row>
+    </v-container>
   </div>
 </template>
 
 <script>
-// @ is an alias to /src
-import HelloWorld from '@/components/HelloWorld.vue'
+import SignInCard from "@/components/SignInCard";
 
 export default {
-  name: 'Home',
+  name: "Home",
   components: {
-    HelloWorld
-  }
-}
+    SignInCard,
+  },
+};
 </script>
+
+<style scoped>
+.full {
+  height: 100%;
+}
+</style>

@@ -1,56 +1,19 @@
 <template>
-  <v-app>
-    <v-app-bar
-      app
-      color="primary"
-      dark
-    >
-      <div class="d-flex align-center">
-        <v-img
-          alt="Vuetify Logo"
-          class="shrink mr-2"
-          contain
-          src="https://cdn.vuetifyjs.com/images/logos/vuetify-logo-dark.png"
-          transition="scale-transition"
-          width="40"
-        />
-
-        <v-img
-          alt="Vuetify Name"
-          class="shrink mt-1 hidden-sm-and-down"
-          contain
-          min-width="100"
-          src="https://cdn.vuetifyjs.com/images/logos/vuetify-name-dark.png"
-          width="100"
-        />
-      </div>
-
-      <v-spacer></v-spacer>
-
-      <v-btn
-        href="https://github.com/vuetifyjs/vuetify/releases/latest"
-        target="_blank"
-        text
-      >
-        <span class="mr-2">Latest Release</span>
-        <v-icon>mdi-open-in-new</v-icon>
-      </v-btn>
-    </v-app-bar>
-
+  <v-app class="primary">
+    <navbar />
     <v-main>
-      <HelloWorld/>
+      <router-view />
     </v-main>
   </v-app>
 </template>
 
 <script>
-import HelloWorld from './components/HelloWorld';
-
+import Navbar from "@/components/Navbar";
 export default {
-  name: 'App',
+  name: "App",
 
   components: {
-    HelloWorld,
+    Navbar,
   },
 
   data: () => ({
@@ -58,3 +21,29 @@ export default {
   }),
 };
 </script>
+
+<style>
+@font-face {
+  font-family: "GoogleSansMedium";
+  src: local("GoogleSansMedium"),
+    url(./assets/google_sans/GoogleSans-Medium.ttf) format("truetype");
+}
+@font-face {
+  font-family: "GoogleSansRegular";
+  src: local("GoogleSansRegular"),
+    url(./assets/google_sans/GoogleSans-Regular.ttf) format("truetype");
+}
+.theme--light .v-main__wrap {
+  background: rgb(242, 242, 242);
+}
+.google-sans-medium {
+  font-family: "GoogleSansMedium";
+  color: #6c6b73;
+}
+
+.google-sans-regular {
+  font-family: "GoogleSansRegular";
+  color: #6c6b73;
+}
+</style>
+
