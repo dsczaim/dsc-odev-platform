@@ -1,9 +1,9 @@
 <template>
-  <div>
+  <section>
     <v-container>
-      <h1>Homeworks</h1>
+      <h2 class="mt-4 google-sans-regular">Ödevler</h2>
     </v-container>
-  </div>
+  </section>
 </template>
 
 <script>

@@ -2,8 +2,9 @@ import firebase from "firebase";
 import firebaseAuth from "@/firebase/auth";
 import firestore from "@/firebase/firestore";
 import router from "../../router";
-import roles from "@/firebase/roles";
+import teamConfig from "@/firebase/teamConfig";
 const provider = new firebase.auth.GoogleAuthProvider();
+const { roles } = teamConfig;
 
 const state = {
   user: null,
@@ -11,6 +12,17 @@ const state = {
 
 const getters = {
   getUser: (state) => state.user,
+  isAdmin: (state) => {
+    if (!state.user || !state.user.role) return false;
+    return (
+      state.user.role == roles.flutter ||
+      state.user.role == roles.database ||
+      state.user.role == roles.iot ||
+      state.user.role == roles.quantum ||
+      state.user.role == roles.social ||
+      state.user.role == roles.machine
+    );
+  },
 };
 
 const actions = {

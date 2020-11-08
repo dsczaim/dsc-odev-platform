@@ -2,7 +2,7 @@ import Vue from "vue";
 import VueRouter from "vue-router";
 import Home from "@/views/Home";
 import Homeworks from "@/views/Homeworks";
-import Resricted from "@/views/Restricted";
+import AddHomework from "@/views/AddHomework";
 import store from "@/store";
 
 Vue.use(VueRouter);
@@ -34,14 +34,13 @@ const routes = [
     },
   },
   {
-    path: "/restricted",
-    name: "Resricted",
-    component: Resricted,
+    path: "/odev-ekle",
+    name: "AddHomework",
+    component: AddHomework,
     beforeEnter: (to, from, next) => {
-      if (
-        store.state.auth.user &&
-        store.state.auth.user.role == "flutter-lead"
-      ) {
+      const user = store.state.auth.user;
+      const isAdmin = store.getters["auth/isAdmin"];
+      if (user && isAdmin) {
         next();
       } else {
         if (from.fullPath == "/") next("/odevler");

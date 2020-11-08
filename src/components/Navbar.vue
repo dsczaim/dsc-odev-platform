@@ -37,7 +37,9 @@
           </v-list-item-icon>
 
           <v-list-item-content>
-            <v-list-item-title dark>{{ link.text }}</v-list-item-title>
+            <v-list-item-title dark class="google-sans-medium">{{
+              link.text
+            }}</v-list-item-title>
           </v-list-item-content>
         </v-list-item>
       </v-list>
@@ -49,12 +51,12 @@
 import { mapActions } from "vuex";
 import links from "@/router/links";
 import { mapGetters } from "vuex";
-import roles from "@/firebase/roles";
+import teamConfig from "@/firebase/teamConfig";
 
 export default {
   data() {
     return {
-      drawer: false,
+      drawer: true,
       links: links,
     };
   },
@@ -62,12 +64,13 @@ export default {
     ...mapActions("auth", ["logout"]),
     filterLinks(link) {
       const userRole = this.getUser.role;
-      if (userRole == roles.member) return link.role == roles.member;
-      else return true;
+      if (userRole == teamConfig.roles.member)
+        return link.role == teamConfig.roles.member;
+      else if (this.isAdmin) return true;
     },
   },
   computed: {
-    ...mapGetters("auth", ["getUser"]),
+    ...mapGetters("auth", ["getUser", "isAdmin"]),
     isNotLogin() {
       return this.$route.path !== "/";
     },

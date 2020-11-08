@@ -1,5 +1,5 @@
 <template>
-  <div class="full d-flex align-center">
+  <section class="full d-flex align-center">
     <v-container fill-height>
       <v-row justify="center">
         <v-col align="center" cols="12" sm="12" md="10" lg="8" xl="6">
@@ -7,7 +7,7 @@
         </v-col>
       </v-row>
     </v-container>
-  </div>
+  </section>
 </template>
 
 <script>

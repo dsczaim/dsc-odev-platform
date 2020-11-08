@@ -6,9 +6,21 @@ export default [
     role: "member",
   },
   {
+    icon: "mdi-folder-plus",
+    text: "Ödev Ekle",
+    route: "/odev-ekle",
+    role: "admin",
+  },
+  {
     icon: "mdi-chart-bar",
     text: "Başarı Sıralaması",
     route: "/siralama",
+    role: "member",
+  },
+  {
+    icon: "mdi-account",
+    text: "Hesap",
+    route: "/hesap",
     role: "member",
   },
 ];
