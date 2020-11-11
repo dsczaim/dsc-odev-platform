@@ -27,6 +27,16 @@
         >
       </v-hover>
     </v-col>
+    <v-row justify="center">
+      <a
+        target="_blank"
+        href="https://www.linkedin.com/in/nurettin-resul-a3a0141a7/"
+        style="text-decoration: none; color: grey; font-size: 10px"
+        class="mt-4 google-sans-regular"
+      >
+        Created by N. Resul Tanyıldızı | Flutter Team Lead
+      </a>
+    </v-row>
   </v-row>
 </template>
 

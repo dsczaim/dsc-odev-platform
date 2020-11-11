@@ -1,22 +1,34 @@
 <template>
-  <section>
-    <v-container>
-      <h2 class="mt-4 google-sans-regular">Ödevler</h2>
-    </v-container>
+  <section style="height: 100%">
+    <homework-list v-if="!isHomeworksLoading" />
+    <circular-progress v-else />
   </section>
 </template>
 
 <script>
+import HomeworkList from "@/components/HomeworkList";
+import CircularProgress from "@/components/CircularProgress";
+import { mapActions } from "vuex";
 export default {
   name: "Homeworks",
-  components: {},
+  components: {
+    HomeworkList,
+    CircularProgress,
+  },
+  data() {
+    return {
+      isHomeworksLoading: false,
+    };
+  },
+  mounted() {
+    this.isHomeworksLoading = true;
+    this.bindHomeworks()
+      .then(() => (this.isHomeworksLoading = false))
+      .catch((error) => console.log(error));
+  },
   methods: {
-    pushResticted() {
-      this.$router.push("/restricted");
-    },
+    ...mapActions("homeworks", ["bindHomeworks"]),
   },
 };
 </script>
 
-<style>
-</style>

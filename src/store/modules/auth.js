@@ -26,38 +26,69 @@ const getters = {
 };
 
 const actions = {
-  signInWithGoogle: ({ commit }) => {
+  signInWithGoogle: ({ commit, dispatch }) => {
     firebaseAuth
       .signInWithPopup(provider)
       .then(({ additionalUserInfo, user }) => {
-        const { uid, displayName, email, photoURL } = user;
+        var fullName = null;
+        var role = null;
+        var scores = null;
+
+        const { uid, photoURL } = user;
         const { isNewUser } = additionalUserInfo;
         const _user = {
           uid,
-          displayName,
-          email,
+          fullName,
           photoURL,
-          isNewUser,
+          role,
+          scores,
         };
 
-        var role;
-
         if (isNewUser) {
-          role = roles.member;
-          writeUser(_user, role);
-          commit("setUser", { ..._user, role });
-          router.push("/odevler");
+          _user.role = roles.member;
+          _user.score = {
+            dtb: 0,
+            flt: 0,
+            iot: 0,
+            mcl: 0,
+            qtc: 0,
+          };
+          dispatch("writeUser", _user);
+          commit("setUser", _user);
         } else {
-          readUser(uid).then((data) => {
-            console.log(data.role);
-            role = data.role;
-            commit("setUser", { ..._user, role });
-            router.push("/odevler");
-          });
+          firestore
+            .collection("users")
+            .doc(uid)
+            .get()
+            .then((doc) => {
+              if (doc.exists) {
+                _user.role = doc.data().role;
+                _user.fullName = doc.data().fullName;
+                _user.score = doc.data().score;
+                commit("setUser", { _user });
+              } else {
+                throw new Error("No such document!");
+              }
+            })
+            .catch((err) => console.log(err));
         }
       })
       .catch((err) => {
         if (err.code == "auth/popup-closed-by-user") return;
+        console.log(err);
+      });
+  },
+
+  updateFullName: ({ commit }, fullName) => {
+    const { uid, role, photoURL } = getters.getUser(state);
+    firestore
+      .collection("users")
+      .doc(uid)
+      .update({ fullName })
+      .then(() => {
+        commit("setUser", { uid, fullName, photoURL, role });
+      })
+      .catch((err) => {
         console.log(err);
       });
   },
@@ -70,6 +101,17 @@ const actions = {
         router.push("/");
       })
       .catch((err) => console.log(err));
+  },
+
+  writeUser: (context, { uid, photoURL, fullName, role, score }) => {
+    firestore
+      .collection("users")
+      .doc(uid)
+      .set({ fullName, photoURL, role, score })
+      .then()
+      .catch((err) => {
+        console.log(err);
+      });
   },
 };
 
@@ -87,30 +129,13 @@ export default {
   namespaced: true,
 };
 
-const writeUser = (user, role) => {
-  firestore
-    .collection("users")
-    .doc(user.uid)
-    .set({ role })
-    .then()
-    .catch((err) => {
-      console.log(err);
-    });
-};
-
-const readUser = async (uid) => {
-  try {
-    const doc = await firestore
-      .collection("users")
-      .doc(uid)
-      .get();
-
-    if (doc.exists) {
-      return doc.data();
-    } else {
-      throw new Error("No such document!");
-    }
-  } catch (err) {
-    console.log(err);
-  }
-};
+// const updateUser = ({ uid, photoURL }) => {
+//   firestore
+//     .collection("users")
+//     .doc(uid)
+//     .update({ photoURL })
+//     .then()
+//     .catch((err) => {
+//       console.log(err);
+//     });
+// };

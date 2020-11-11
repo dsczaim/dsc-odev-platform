@@ -1,142 +1,180 @@
 <template>
-  <v-form class="mt-5" ref="form" v-model="valid" lazy-validation>
-    <v-text-field
-      v-model="teams[getUser.role]"
-      label="Ekip"
-      readonly
-      required
-    ></v-text-field>
-    <v-text-field
-      v-model="title"
-      counter
-      :rules="titleRules"
-      label="Ödev Başlığı"
-      required
-    ></v-text-field>
-    <v-row>
-      <v-col cols="12" sm="">
-        <v-text-field
-          v-model="score"
-          append-icon="mdi-star"
-          :rules="scoreRules"
-          label="Ödev Puanı"
-          required
-        ></v-text-field>
-      </v-col>
-      <v-col cols="12" sm="4">
-        <v-dialog
-          ref="startDialog"
-          v-model="startModal"
-          :return-value.sync="startDate"
-          persistent
-          width="290px"
-        >
-          <template v-slot:activator="{ on, attrs }">
-            <v-text-field
+  <section>
+    <success-dialog :isSent="isSent" v-on:isSentFalse="isSent = false" />
+    <v-form class="mt-5" ref="form" v-model="valid" lazy-validation>
+      <v-text-field
+        v-model="teams[getUser.role]"
+        label="Ekip"
+        readonly
+        required
+      ></v-text-field>
+      <v-text-field
+        v-model="title"
+        :counter="40"
+        :rules="titleRules"
+        label="Ödev Başlığı"
+        required
+      ></v-text-field>
+      <v-text-field
+        v-model="shortDesc"
+        :counter="40"
+        :rules="shortDescRules"
+        label="Ödev Açıklaması (Kısa)"
+        required
+      ></v-text-field>
+      <v-row>
+        <v-col cols="12" sm="3">
+          <v-checkbox v-model="requiresFile">
+            <template v-slot:label>
+              <v-tooltip bottom>
+                <template v-slot:activator="{ on }">
+                  <div v-on="on">Ödev dosyası gerekli</div>
+                </template>
+                Seçilmezse dosya alınmayacak
+              </v-tooltip>
+            </template>
+          </v-checkbox>
+        </v-col>
+        <v-col cols="12" sm="3">
+          <v-text-field
+            v-model="score"
+            append-icon="mdi-star"
+            :rules="scoreRules"
+            label="Ödev Puanı"
+            required
+          ></v-text-field>
+        </v-col>
+        <v-col cols="12" sm="3">
+          <v-dialog
+            ref="startDialog"
+            v-model="startModal"
+            :return-value.sync="startDate"
+            persistent
+            width="290px"
+          >
+            <template v-slot:activator="{ on, attrs }">
+              <v-text-field
+                v-model="startDate"
+                label="Başlangıç Tarihi"
+                hint="Başlangıç tarihini değiştiremezsiniz"
+                persistent-hint
+                append-icon="mdi-calendar-today"
+                readonly
+                v-bind="attrs"
+                v-on="on"
+                @click:append="startDate = defaultDate"
+              ></v-text-field>
+            </template>
+            <v-date-picker
               v-model="startDate"
-              label="Başlangıç Tarihi"
-              hint="Bugüne gitmek için takvim ikonuna tıklayın"
-              persistent-hint
-              append-icon="mdi-calendar-today"
               readonly
-              v-bind="attrs"
-              v-on="on"
-              @click:append="startDate = defaultDate"
-            ></v-text-field>
-          </template>
-          <v-date-picker
-            v-model="startDate"
-            scrollable
-            :show-current="true"
-            locale="tr-tr"
-            :allowed-dates="allowedStartDates"
-          >
-            <v-spacer></v-spacer>
-            <v-btn text color="primary" @click="startModal = false">
-              İptal
-            </v-btn>
-            <v-btn
-              text
-              color="primary"
-              @click="$refs.startDialog.save(startDate)"
+              scrollable
+              :show-current="true"
+              locale="tr-tr"
+              :allowed-dates="allowedStartDates"
             >
-              Tamam
-            </v-btn>
-          </v-date-picker>
-        </v-dialog>
-      </v-col>
-      <v-col cols="12" sm="4">
-        <v-dialog
-          ref="endDialog"
-          v-model="endModal"
-          :return-value.sync="endDate"
-          persistent
-          width="290px"
-        >
-          <template v-slot:activator="{ on, attrs }">
-            <v-text-field
-              v-model="endDate"
-              label="Bitiş Tarihi"
-              hint="Başlangıç tarihine gitmek için takvim ikonuna tıklayın"
-              persistent-hint
-              append-icon="mdi-calendar-today"
-              readonly
-              v-bind="attrs"
-              v-on="on"
-              @click:append="endDate = startDate"
-            ></v-text-field>
-          </template>
-          <v-date-picker
-            v-model="endDate"
-            scrollable
-            :show-current="true"
-            locale="tr-tr"
-            :allowed-dates="allowedEndDates"
+              <v-spacer></v-spacer>
+              <v-btn text color="primary" @click="startModal = false">
+                İptal
+              </v-btn>
+              <v-btn
+                text
+                color="primary"
+                @click="$refs.startDialog.save(startDate)"
+              >
+                Tamam
+              </v-btn>
+            </v-date-picker>
+          </v-dialog>
+        </v-col>
+        <v-col cols="12" sm="3">
+          <v-dialog
+            ref="endDialog"
+            v-model="endModal"
+            :return-value.sync="endDate"
+            persistent
+            width="290px"
           >
-            <v-spacer></v-spacer>
-            <v-btn text color="primary" @click="endModal = false">
-              İptal
-            </v-btn>
-            <v-btn text color="primary" @click="$refs.endDialog.save(endDate)">
-              Tamam
-            </v-btn>
-          </v-date-picker>
-        </v-dialog>
-      </v-col>
-    </v-row>
+            <template v-slot:activator="{ on, attrs }">
+              <v-text-field
+                v-model="endDate"
+                label="Bitiş Tarihi"
+                hint="Başlangıç tarihine gitmek için takvim ikonuna tıklayın"
+                persistent-hint
+                append-icon="mdi-calendar-today"
+                readonly
+                v-bind="attrs"
+                v-on="on"
+                @click:append="endDate = startDate"
+              ></v-text-field>
+            </template>
+            <v-date-picker
+              v-model="endDate"
+              scrollable
+              :show-current="true"
+              locale="tr-tr"
+              :allowed-dates="allowedEndDates"
+            >
+              <v-spacer></v-spacer>
+              <v-btn text color="primary" @click="endModal = false">
+                İptal
+              </v-btn>
+              <v-btn
+                text
+                color="primary"
+                @click="$refs.endDialog.save(endDate)"
+              >
+                Tamam
+              </v-btn>
+            </v-date-picker>
+          </v-dialog>
+        </v-col>
+      </v-row>
 
-    <v-row>
-      <v-spacer></v-spacer>
-      <v-btn :disabled="!valid" color="success" class="mt-4" @click="validate">
-        Oluştur
-      </v-btn>
-    </v-row>
-  </v-form>
+      <div class="my-3">Ödev Tanımı</div>
+      <Vueditor ref="editor"></Vueditor>
+
+      <v-row>
+        <v-spacer></v-spacer>
+        <v-btn
+          :disabled="!valid"
+          color="success"
+          class="mt-4 mr-3"
+          @click="addHomeworkWithData()"
+          :loading="isLoading"
+        >
+          Oluştur
+        </v-btn>
+      </v-row>
+    </v-form>
+  </section>
 </template>
 
 <script>
-import { mapGetters } from "vuex";
+import SuccessDialog from "@/components/SuccessDialog";
+import moment from "moment";
+import { mapActions, mapGetters } from "vuex";
 import teamConfig from "@/firebase/teamConfig";
-const { teams } = teamConfig;
+const { teams, ids } = teamConfig;
 export default {
   name: "AddHomeworkForm",
+  components: {
+    SuccessDialog,
+  },
   computed: {
     ...mapGetters("auth", ["getUser"]),
     defaultDate() {
-      const date = new Date();
-      const dates = date.toLocaleDateString().split("/").reverse();
-      if (parseInt(dates[1]) < 10) {
-        dates[1] = "0" + dates[1];
-      }
-
-      return dates.join("-");
+      return moment().format("YYYY-MM-DD");
     },
   },
   data() {
     return {
       valid: true,
       title: "",
-      titleRules: [(v) => !!v || "Ödev Başlığı zorunludur"],
+      titleRules: [
+        (v) => !!v || "Ödev Başlığı zorunludur",
+        (v) => v.length <= 40 || "Ödev başlığı en fazla 40 karakter olmalıdır",
+      ],
       score: 5,
       scoreRules: [
         (v) => !!v || "Ödev Puanı zorunludur",
@@ -145,16 +183,28 @@ export default {
           (Number(v) > 0 && Number(v) <= 100) ||
           "Ödev Puanı 0 ile 100 arasında olmalıdır",
       ],
+
+      shortDesc: "Kısa bir açıklama",
+      shortDescRules: [
+        (v) => !!v || "Kısa açıklama zorunludur",
+        (v) => v.length <= 40 || "Kısa açıklama en fazla 40 karakter olmalıdır",
+      ],
       teams: teams,
+      ids: ids,
       checkbox: false,
       startModal: false,
       endModal: false,
       startDate: null,
       endDate: null,
+      description: "Hello",
+      isLoading: false,
+      isSent: false,
+      requiresFile: false,
     };
   },
 
   methods: {
+    ...mapActions("homeworks", ["addHomework"]),
     validate() {
       this.$refs.form.validate();
     },
@@ -165,23 +215,48 @@ export default {
       this.$refs.form.resetValidation();
     },
 
-    allowedStartDates(date) {
-      return this.isDateBiggerOrEqual(date, this.defaultDate);
-    },
-    allowedEndDates(date) {
-      return this.isDateBiggerOrEqual(date, this.startDate);
+    addHomeworkWithData() {
+      this.validate();
+      this.isLoading = true;
+      const homeWork = {
+        title: this.title,
+        score: parseInt(this.score),
+        startDate: this.startDate,
+        endDate: this.endDate,
+        description: this.$refs.editor.getContent(),
+        shortDesc: this.shortDesc,
+        isFileRequired: this.requiresFile,
+        teamId: this.ids[this.getUser.role],
+      };
+      this.addHomework(homeWork)
+        .then(() => {
+          this.isLoading = false;
+          this.isSent = true;
+        })
+        .catch((err) => console.log(err));
     },
 
-    isDateBiggerOrEqual(first, second) {
-      const firstDate = new Date(first).getTime();
-      const secondDate = new Date(second).getTime();
+    allowedStartDates(val) {
+      const today = moment().clone().hour(0).minute(0).second(0).millisecond(0);
+      const date = moment(val);
 
-      return firstDate >= secondDate;
+      return date >= today;
+    },
+    allowedEndDates(val) {
+      const today = moment(this.startDate)
+        .clone()
+        .hour(0)
+        .minute(0)
+        .second(0)
+        .millisecond(0);
+      const date = moment(val);
+
+      return date >= today;
     },
   },
   watch: {
     startDate: function (newDate) {
-      if (this.isDateBiggerOrEqual(newDate, this.endDate)) {
+      if (moment(newDate) > moment(this.endDate)) {
         this.endDate = newDate;
       }
     },
@@ -195,4 +270,7 @@ export default {
 </script>
 
 <style>
+.vueditor {
+  min-height: 350px !important;
+}
 </style>

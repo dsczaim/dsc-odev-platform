@@ -3,6 +3,7 @@ import VueRouter from "vue-router";
 import Home from "@/views/Home";
 import Homeworks from "@/views/Homeworks";
 import AddHomework from "@/views/AddHomework";
+import SuccessRates from "@/views/SuccessRates";
 import store from "@/store";
 
 Vue.use(VueRouter);
@@ -13,7 +14,8 @@ const routes = [
     name: "Home",
     component: Home,
     beforeEnter: (to, from, next) => {
-      if (!store.state.auth.user) {
+      const user = store.state.auth.user;
+      if (!user || !user.fullName) {
         next();
       } else {
         if (from.fullPath == "/") next("/odevler");
@@ -26,11 +28,21 @@ const routes = [
     name: "Homeworks",
     component: Homeworks,
     beforeEnter: (to, from, next) => {
-      if (store.state.auth.user) {
-        next();
-      } else {
-        next("/");
-      }
+      const user = store.state.auth.user;
+
+      if (!user || !user.fullName) next("/");
+      else next();
+    },
+  },
+  {
+    path: "/siralama",
+    name: "SuccessRates",
+    component: SuccessRates,
+    beforeEnter: (to, from, next) => {
+      const user = store.state.auth.user;
+
+      if (!user || !user.fullName) next("/");
+      else next();
     },
   },
   {
@@ -39,12 +51,15 @@ const routes = [
     component: AddHomework,
     beforeEnter: (to, from, next) => {
       const user = store.state.auth.user;
-      const isAdmin = store.getters["auth/isAdmin"];
-      if (user && isAdmin) {
-        next();
-      } else {
-        if (from.fullPath == "/") next("/odevler");
-        else next(false);
+      if (!user || !user.fullName) next("/");
+      else {
+        const isAdmin = store.getters["auth/isAdmin"];
+        if (isAdmin) {
+          next();
+        } else {
+          if (from.fullPath == "/") next("/odevler");
+          else next(false);
+        }
       }
     },
   },

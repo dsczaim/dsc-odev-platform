@@ -1,8 +1,8 @@
 <template>
   <section>
     <v-container>
-      <h2 class="mt-4 google-sans-regular">Ödev Ekle</h2>
-      <add-homework-form />
+      <h2 class="mt-4 mx-3 google-sans-regular">Ödev Ekle</h2>
+      <add-homework-form class="mx-3" />
     </v-container>
   </section>
 </template>

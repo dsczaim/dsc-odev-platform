@@ -12,6 +12,9 @@
         </router-link>
       </v-toolbar-title>
       <v-spacer></v-spacer>
+
+      <user-avatar />
+
       <v-btn @click="logout()" text>
         <span class="google-sans-regular">Çıkış</span>
         <v-icon color="#6c6b73" right>mdi-exit-to-app</v-icon>
@@ -49,16 +52,19 @@
 
 <script>
 import { mapActions } from "vuex";
-import links from "@/router/links";
 import { mapGetters } from "vuex";
+import links from "@/router/links";
 import teamConfig from "@/firebase/teamConfig";
-
+import UserAvatar from "@/components/UserAvatar";
 export default {
   data() {
     return {
       drawer: true,
       links: links,
     };
+  },
+  components: {
+    UserAvatar,
   },
   methods: {
     ...mapActions("auth", ["logout"]),
