@@ -55,6 +55,7 @@ export default {
       ],
     };
   },
+
   props: {
     dialog: Boolean,
   },
