@@ -21,9 +21,9 @@
       </v-btn>
     </v-app-bar>
 
-    <v-navigation-drawer v-model="drawer" app color="teal grey lighten-4">
-      <v-row class="mt-5" align="center" justify="center">
-        <img src="@/assets/onlylogo.png" alt="avatar-2" />
+    <v-navigation-drawer v-model="drawer" app color="grey lighten-4">
+      <v-row align="center" justify="center">
+        <img src="@/assets/logoDSC.png" width="200" alt="avatar-2" />
         <span class="google-sans-regular mr-1">Google DSC</span>
         <span class="google-sans-medium">Zaim</span>
       </v-row>
@@ -54,7 +54,6 @@
 import { mapActions } from "vuex";
 import { mapGetters } from "vuex";
 import links from "@/router/links";
-import teamConfig from "@/firebase/teamConfig";
 import UserAvatar from "@/components/UserAvatar";
 export default {
   data() {
@@ -70,13 +69,15 @@ export default {
     ...mapActions("auth", ["logout"]),
     filterLinks(link) {
       const userRole = this.getUser.role;
-      if (userRole == teamConfig.roles.member)
-        return link.role == teamConfig.roles.member;
+      if (userRole == this.getTeamConfig.roles.member)
+        return link.role == this.getTeamConfig.roles.member;
       else if (this.isAdmin) return true;
     },
   },
   computed: {
     ...mapGetters("auth", ["getUser", "isAdmin"]),
+    ...mapGetters("teamConfig", ["getTeamConfig"]),
+
     isNotLogin() {
       return this.$route.path !== "/";
     },

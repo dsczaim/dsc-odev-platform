@@ -3,7 +3,7 @@
     <success-dialog :isSent="isSent" v-on:isSentFalse="isSent = false" />
     <v-form class="mt-5" ref="form" v-model="valid" lazy-validation>
       <v-text-field
-        v-model="teams[getUser.role]"
+        v-model="userTeamNameFromRole"
         label="Ekip"
         readonly
         required
@@ -154,15 +154,21 @@
 import SuccessDialog from "@/components/SuccessDialog";
 import moment from "moment";
 import { mapActions, mapGetters } from "vuex";
-import teamConfig from "@/firebase/teamConfig";
-const { teams, ids } = teamConfig;
 export default {
   name: "AddHomeworkForm",
   components: {
     SuccessDialog,
   },
+
   computed: {
     ...mapGetters("auth", ["getUser"]),
+    ...mapGetters("teamConfig", ["getTeamConfig"]),
+    userTeamNameFromRole() {
+      return this.getTeamConfig.teams.get(this.getUser.role);
+    },
+    userTeamIdFromRole() {
+      return this.getTeamConfig.ids.get(this.getUser.role);
+    },
     defaultDate() {
       return moment().format("YYYY-MM-DD");
     },
@@ -189,8 +195,7 @@ export default {
         (v) => !!v || "Kısa açıklama zorunludur",
         (v) => v.length <= 40 || "Kısa açıklama en fazla 40 karakter olmalıdır",
       ],
-      teams: teams,
-      ids: ids,
+
       checkbox: false,
       startModal: false,
       endModal: false,
@@ -226,7 +231,7 @@ export default {
         description: this.$refs.editor.getContent(),
         shortDesc: this.shortDesc,
         isFileRequired: this.requiresFile,
-        teamId: this.ids[this.getUser.role],
+        teamId: this.userTeamIdFromRole,
       };
       this.addHomework(homeWork)
         .then(() => {
@@ -264,7 +269,7 @@ export default {
 
   mounted() {
     this.startDate = this.endDate = this.defaultDate;
-    this.title = `Yeni ${this.teams[this.getUser.role]} Ödevi`;
+    this.title = `Yeni ${this.userTeamNameFromRole} Ödevi`;
   },
 };
 </script>

@@ -21,6 +21,7 @@ export default {
     };
   },
   mounted() {
+    this.unbindHomework();
     this.isHomeworksLoading = true;
     this.bindHomeworks()
       .then(() => (this.isHomeworksLoading = false))
@@ -28,6 +29,7 @@ export default {
   },
   methods: {
     ...mapActions("homeworks", ["bindHomeworks"]),
+    ...mapActions("homework", ["unbindHomework"]),
   },
 };
 </script>

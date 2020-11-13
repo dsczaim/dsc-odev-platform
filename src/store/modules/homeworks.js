@@ -1,4 +1,5 @@
 import firestore from "@/firebase/firestore";
+import firebase from "firebase";
 import moment from "moment";
 import { v4 as uuidv4 } from "uuid";
 import { firestoreAction } from "vuexfire";
@@ -54,6 +55,8 @@ const actions = {
         description,
         shortDesc,
         isFileRequired,
+        createdAt: firebase.firestore.FieldValue.serverTimestamp(),
+        deletedAt: null,
       })
       .then()
       .catch((err) => {
@@ -61,21 +64,22 @@ const actions = {
       });
   },
 
-  deleteHomework: (context, { id }) => {
+  deleteHomework: (context, id) => {
     firestore
       .collection("homeworks")
       .doc(id)
-      .delete()
-      .then()
-      .catch((err) => {
-        console.log(err);
+      .update({
+        deletedAt: firebase.firestore.FieldValue.serverTimestamp(),
       });
   },
 
   bindHomeworks: firestoreAction((context) => {
     return context.bindFirestoreRef(
       "homeworks",
-      firestore.collection("homeworks").orderBy("startDate", "desc")
+      firestore
+        .collection("homeworks")
+        .where("deletedAt", "==", null)
+        .orderBy("createdAt", "desc")
     );
   }),
 };

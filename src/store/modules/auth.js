@@ -2,9 +2,7 @@ import firebase from "firebase";
 import firebaseAuth from "@/firebase/auth";
 import firestore from "@/firebase/firestore";
 import router from "../../router";
-import teamConfig from "@/firebase/teamConfig";
 const provider = new firebase.auth.GoogleAuthProvider();
-const { roles } = teamConfig;
 
 const state = {
   user: null,
@@ -12,21 +10,22 @@ const state = {
 
 const getters = {
   getUser: (state) => state.user,
-  isAdmin: (state) => {
+  isAdmin: (state, getters, rootState) => {
     if (!state.user || !state.user.role) return false;
     return (
-      state.user.role == roles.flutter ||
-      state.user.role == roles.database ||
-      state.user.role == roles.iot ||
-      state.user.role == roles.quantum ||
-      state.user.role == roles.social ||
-      state.user.role == roles.machine
+      state.user.role == rootState.teamConfig.roles.flutter ||
+      state.user.role == rootState.teamConfig.roles.database ||
+      state.user.role == rootState.teamConfig.roles.iot ||
+      state.user.role == rootState.teamConfig.roles.quantum ||
+      state.user.role == rootState.teamConfig.roles.social ||
+      state.user.role == rootState.teamConfig.roles.machine ||
+      state.user.role == rootState.teamConfig.roles.dsc
     );
   },
 };
 
 const actions = {
-  signInWithGoogle: ({ commit, dispatch }) => {
+  signInWithGoogle: ({ commit, dispatch, rootState }) => {
     firebaseAuth
       .signInWithPopup(provider)
       .then(({ additionalUserInfo, user }) => {
@@ -45,7 +44,7 @@ const actions = {
         };
 
         if (isNewUser) {
-          _user.role = roles.member;
+          _user.role = rootState.teamConfig.roles.member;
           _user.score = {
             dtb: 0,
             flt: 0,

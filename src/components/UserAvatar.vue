@@ -3,7 +3,7 @@
     <template v-slot:activator="{ on, attrs }">
       <div class="mr-sm-2" v-on="on" v-bind="attrs">
         <!-- If user is an admin -->
-        <v-badge avatar bordered overlap color="grey darken-1" v-if="isAdmin">
+        <v-badge avatar bordered overlap color="white" v-if="isAdmin">
           <template v-slot:badge>
             <v-avatar>
               <v-img :src="getBadge"></v-img>
@@ -29,20 +29,24 @@
 
 <script>
 import { mapGetters } from "vuex";
-import teamConfig from "@/firebase/teamConfig";
-const { ids, media } = teamConfig;
 export default {
   name: "UserAvatar",
 
   computed: {
     ...mapGetters("auth", ["getUser", "isAdmin"]),
+    ...mapGetters("teamConfig", ["getTeamConfig"]),
+
     getBadge() {
-      const id = ids[this.getUser.role];
-      return media[id].picture32;
+      const id = this.getTeamConfig.ids.get(this.getUser.role);
+      return this.getTeamConfig.media.get(id).picture32;
     },
   },
 };
 </script>
 
-<style>
+<style >
+.theme--light.v-badge .v-badge__badge::after {
+  border-color: #757575 !important;
+  border-width: 1px;
+}
 </style>
