@@ -5,6 +5,7 @@ import Homeworks from "@/views/Homeworks";
 import Homework from "@/views/Homework";
 import AddHomework from "@/views/AddHomework";
 import SuccessRates from "@/views/SuccessRates";
+import Profile from "@/views/Profile";
 import store from "@/store";
 
 Vue.use(VueRouter);
@@ -39,6 +40,17 @@ const routes = [
     path: "/odevler/:id",
     name: "Homework",
     component: Homework,
+    beforeEnter: (to, from, next) => {
+      const user = store.state.auth.user;
+
+      if (!user || !user.fullName) next("/");
+      else next();
+    },
+  },
+  {
+    path: "/hesap",
+    name: "Profile",
+    component: Profile,
     beforeEnter: (to, from, next) => {
       const user = store.state.auth.user;
 

@@ -19,6 +19,7 @@ const state = {
   },
 
   teams: new Map([
+    [process.env.VUE_APP_ROLE_MEMBER, "Katılımcı"],
     [process.env.VUE_APP_ROLE_DATABASE, "Database & Firebase"],
     [process.env.VUE_APP_ROLE_FLUTTER, "Flutter"],
     [process.env.VUE_APP_ROLE_IOT, "IOT"],

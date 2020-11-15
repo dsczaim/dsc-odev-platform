@@ -75,7 +75,6 @@ const actions = {
       })
       .catch((err) => {
         if (err.code == "auth/popup-closed-by-user") return;
-        console.log(err);
       });
   },
 
@@ -97,6 +96,29 @@ const actions = {
     firebaseAuth
       .signOut()
       .then(() => {
+        commit("setUser", null);
+        router.push("/");
+      })
+      .catch((err) => console.log(err));
+  },
+
+  deleteAccount: async ({ commit, getters }) => {
+    const uid = getters["getUserId"];
+    await firestore
+      .collection("homework_user")
+      .where("userId", "==", uid)
+      .get()
+      .then(async (querySnapshot) => {
+        querySnapshot.forEach(async (doc) => {
+          await doc.ref.delete();
+        });
+
+        await firestore
+          .collection("users")
+          .doc(uid)
+          .delete();
+
+        await firebaseAuth.currentUser.delete();
         commit("setUser", null);
         router.push("/");
       })

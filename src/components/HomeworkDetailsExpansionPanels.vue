@@ -10,7 +10,7 @@
       </v-expansion-panel-header>
       <v-expansion-panel-content color="grey lighten-4">
         <v-divider class="mb-4"></v-divider>
-        <attendance-data-table :attendanceData="attendanceData" />
+        <homework-attendance-data-table :attendanceData="attendanceData" />
       </v-expansion-panel-content>
     </v-expansion-panel>
     <v-expansion-panel>
@@ -30,7 +30,7 @@
 </template>
 
 <script>
-import AttendanceDataTable from "@/components/AttendanceDataTable";
+import HomeworkAttendanceDataTable from "@/components/HomeworkAttendanceDataTable";
 export default {
   name: "HomeworkDetailsExpansionPanels",
   data() {
@@ -39,7 +39,7 @@ export default {
     };
   },
   components: {
-    AttendanceDataTable,
+    HomeworkAttendanceDataTable,
   },
   props: {
     attendanceData: {

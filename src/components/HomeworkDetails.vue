@@ -106,7 +106,6 @@ export default {
 
     closeAttendDialog(e) {
       if (e == "sent") {
-        console.log(e);
         this.checkAttendanceExists().then(() => (this.attendDialog = false));
       } else {
         this.attendDialog = false;

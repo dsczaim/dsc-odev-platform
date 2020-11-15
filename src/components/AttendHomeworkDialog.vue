@@ -83,12 +83,6 @@ export default {
     dialog: Boolean,
   },
 
-  watch: {
-    file: (newValue) => {
-      console.log(newValue);
-    },
-  },
-
   methods: {
     ...mapActions("attendance", ["addAttendance"]),
     addAttend() {
@@ -97,6 +91,7 @@ export default {
         homeworkId: this.getHomework.id,
         description: this.description,
         homeworkTitle: this.getHomework.title,
+        homeworkScore: this.getHomework.score,
         file: this.file,
       }).then(() => {
         this.isUploading = false;
