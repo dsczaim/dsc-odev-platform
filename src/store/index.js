@@ -6,6 +6,7 @@ import homeworks from "./modules/homeworks";
 import homework from "./modules/homework";
 import users from "./modules/users";
 import teamConfig from "./modules/teamConfig";
+import attendance from "./modules/attendance";
 import { vuexfireMutations } from "vuexfire";
 
 Vue.use(Vuex);
@@ -22,5 +23,6 @@ export default new Vuex.Store({
     users,
     teamConfig,
     homework,
+    attendance,
   },
 });

@@ -103,7 +103,4 @@ export default {
 </script>
 
 <style>
-.me {
-  background-color: #fffde7;
-}
 </style>

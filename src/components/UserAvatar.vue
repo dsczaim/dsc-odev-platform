@@ -3,7 +3,7 @@
     <template v-slot:activator="{ on, attrs }">
       <div class="mr-sm-2" v-on="on" v-bind="attrs">
         <!-- If user is an admin -->
-        <v-badge avatar bordered overlap color="white" v-if="isAdmin">
+        <v-badge avatar bordered overlap color="white" v-if="getIsAdmin">
           <template v-slot:badge>
             <v-avatar>
               <v-img :src="getBadge"></v-img>
@@ -33,7 +33,7 @@ export default {
   name: "UserAvatar",
 
   computed: {
-    ...mapGetters("auth", ["getUser", "isAdmin"]),
+    ...mapGetters("auth", ["getUser", "getIsAdmin"]),
     ...mapGetters("teamConfig", ["getTeamConfig"]),
 
     getBadge() {

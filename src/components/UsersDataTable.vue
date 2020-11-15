@@ -2,7 +2,6 @@
   <v-data-table
     :headers="headers"
     :items="usersData"
-    item-key="name"
     locale="tr-TR"
     class="elevation-1 mt-4"
     :footer-props="{
@@ -24,6 +23,12 @@
       <v-avatar size="30" color="success" dark>
         <v-img :src="item.photo"></v-img>
       </v-avatar>
+    </template>
+    <template v-slot:[`item.name`]="{ item }">
+      {{ item.name }}
+      <span class="text-caption google-sans-regular">
+        #{{ item.id.substring(item.id.length - 4) }}
+      </span>
     </template>
     <template v-slot:[`item.dtb`]="{ item }">
       <v-chip :color="getColor('dtb')"> {{ item.dtb }}</v-chip>
@@ -73,7 +78,7 @@ export default {
   },
   methods: {
     itemRowBackground(item) {
-      if (item.id == this.getUser.uid) return "me";
+      if (item.id == this.getUserId) return "me";
     },
 
     getColor(teamId) {
@@ -81,7 +86,7 @@ export default {
     },
   },
   computed: {
-    ...mapGetters("auth", ["getUser"]),
+    ...mapGetters("auth", ["getUserId"]),
     ...mapGetters("teamConfig", ["getTeamConfig"]),
 
     headers() {
@@ -142,4 +147,7 @@ export default {
 </script>
 
 <style>
+.me {
+  background-color: #fffde7;
+}
 </style>

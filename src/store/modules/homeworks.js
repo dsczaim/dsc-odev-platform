@@ -15,6 +15,7 @@ const state = {
 };
 const getters = {
   getHomeworks: (state) => state.homeworks,
+  getToday: () => today,
   getFlutterHomeWorks: (state) =>
     state.homeworks.filter((homework) => homework.id.startsWith("flt")),
   getActiveHomeworks(state) {

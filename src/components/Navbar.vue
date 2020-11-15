@@ -71,11 +71,11 @@ export default {
       const userRole = this.getUser.role;
       if (userRole == this.getTeamConfig.roles.member)
         return link.role == this.getTeamConfig.roles.member;
-      else if (this.isAdmin) return true;
+      else if (this.getIsAdmin) return true;
     },
   },
   computed: {
-    ...mapGetters("auth", ["getUser", "isAdmin"]),
+    ...mapGetters("auth", ["getUser", "getIsAdmin"]),
     ...mapGetters("teamConfig", ["getTeamConfig"]),
 
     isNotLogin() {

@@ -10,7 +10,8 @@ const state = {
 
 const getters = {
   getUser: (state) => state.user,
-  isAdmin: (state, getters, rootState) => {
+  getUserId: (state) => state.user.uid,
+  getIsAdmin: (state, getters, rootState) => {
     if (!state.user || !state.user.role) return false;
     return (
       state.user.role == rootState.teamConfig.roles.flutter ||

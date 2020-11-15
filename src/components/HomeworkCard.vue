@@ -1,6 +1,6 @@
 <template>
   <div>
-    <delete-dialog
+    <delete-homework-dialoge
       :dialog="deleteDialog"
       :cardId="id"
       v-on:closeDialog="deleteDialog = false"
@@ -141,7 +141,7 @@
 <script>
 import { mapGetters } from "vuex";
 import moment from "moment";
-import DeleteDialog from "./DeleteDialog.vue";
+import DeleteHomeworkDialoge from "./DeleteHomeworkDialoge.vue";
 
 export default {
   name: "HomeworkCard",
@@ -151,7 +151,7 @@ export default {
     };
   },
   components: {
-    DeleteDialog,
+    DeleteHomeworkDialoge,
   },
   props: {
     id: String,

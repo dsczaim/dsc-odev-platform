@@ -8,7 +8,6 @@ const getters = {
 };
 const actions = {
   bindHomework: firestoreAction((context, id) => {
-    console.log(id);
     return context.bindFirestoreRef(
       "homework",
       firestore.collection("homeworks").doc(id)

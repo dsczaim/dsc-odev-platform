@@ -20,7 +20,7 @@
 <script>
 import { mapActions } from "vuex";
 export default {
-  name: "DeleteDialog",
+  name: "DeleteHomeworkDialoge",
 
   props: {
     cardId: {
@@ -36,7 +36,7 @@ export default {
   methods: {
     ...mapActions("homeworks", ["deleteHomework"]),
     closeDialog() {
-      this.$emit("closeDialog");
+      this.$emit("closeDialoge");
     },
 
     deleteHw() {

@@ -65,7 +65,7 @@ const routes = [
       const user = store.state.auth.user;
       if (!user || !user.fullName) next("/");
       else {
-        const isAdmin = store.getters["auth/isAdmin"];
+        const isAdmin = store.getters["auth/getIsAdmin"];
         if (isAdmin) {
           next();
         } else {
