@@ -68,7 +68,7 @@ const actions = {
     );
   },
 
-  deleteAttendance: ({ rootGetters }, { homeworkId }) => {
+  deleteAttendance: ({ dispatch, rootGetters }, { homeworkId }) => {
     const userId = rootGetters["auth/getUserId"];
     const id = `${homeworkId}-${userId}`;
 
@@ -76,7 +76,9 @@ const actions = {
       .collection("homework_user")
       .doc(id)
       .delete()
-      .then()
+      .then(() => {
+        return dispatch("calculateUserScore", { userId });
+      })
       .catch((err) => console.log(err));
   },
 
@@ -146,7 +148,7 @@ const actions = {
   },
 
   writeFirestore: (
-    context,
+    { dispatch },
     {
       id,
       userId,
@@ -181,7 +183,9 @@ const actions = {
       .collection("homework_user")
       .doc(id)
       .set(attendance)
-      .then()
+      .then(() => {
+        return dispatch("calculateUserScore", { userId });
+      })
       .catch((err) => console.log(err));
   },
 

@@ -86,7 +86,7 @@ export default {
           userId: this.item.userId,
           score: this.score,
         }).then(() => {
-          this.isUploading = true;
+          this.isUploading = false;
           this.closeDialoge("sent");
         });
     },

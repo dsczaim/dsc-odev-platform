@@ -1,9 +1,9 @@
 <template>
   <div>
     <delete-homework-dialoge
-      :dialog="deleteDialog"
+      :dialog="deleteDialoge"
       :cardId="id"
-      v-on:closeDialog="deleteDialog = false"
+      v-on:closeDialoge="deleteDialoge = false"
     />
     <v-card
       :color="color1"
@@ -104,7 +104,7 @@
             <v-btn
               class="ma-0 mr-2"
               v-if="canUserDelete"
-              @click="deleteDialog = true"
+              @click="deleteDialoge = true"
               icon
               v-on="on"
               v-bind="attrs"
@@ -147,7 +147,7 @@ export default {
   name: "HomeworkCard",
   data() {
     return {
-      deleteDialog: false,
+      deleteDialoge: false,
     };
   },
   components: {

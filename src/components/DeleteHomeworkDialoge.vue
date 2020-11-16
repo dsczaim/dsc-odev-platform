@@ -10,7 +10,7 @@
       </v-card-text>
       <v-card-actions>
         <v-spacer></v-spacer>
-        <v-btn color="error" text @click="closeDialog"> İptal </v-btn>
+        <v-btn color="error" text @click="closeDialoge"> İptal </v-btn>
         <v-btn color="error" text @click="deleteHw"> Sil </v-btn>
       </v-card-actions>
     </v-card>
@@ -35,14 +35,14 @@ export default {
 
   methods: {
     ...mapActions("homeworks", ["deleteHomework"]),
-    closeDialog() {
+    closeDialoge() {
       this.$emit("closeDialoge");
     },
 
     deleteHw() {
       this.deleteHomework(this.cardId)
         .then(() => {
-          this.closeDialog();
+          this.closeDialoge();
         })
         .catch((err) => console.log(err));
     },

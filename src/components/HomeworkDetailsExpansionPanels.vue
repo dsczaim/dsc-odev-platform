@@ -24,8 +24,8 @@
       <v-expansion-panel-content color="grey lighten-4">
         <v-divider class="mb-4"></v-divider>
 
-        <v-row justify="center">
-          <v-col cols="12" md="10" lg="8" xl="6">
+        <v-row justify="center" style="margin: 0; padding: 0">
+          <v-col cols="12" md="10" lg="8" xl="6" class="pa-0">
             <div class="homework-container">
               <v-img
                 style="margin: auto"
@@ -34,7 +34,11 @@
                 max-height="35"
                 src="@/assets/developerstudent.png"
               ></v-img>
-              <div class="homework-content" v-html="description"></div>
+              <div class="homework-content">
+                <div class="output ql-snow">
+                  <div class="ql-editor" v-html="description"></div>
+                </div>
+              </div>
             </div>
           </v-col>
         </v-row>
@@ -72,22 +76,12 @@ export default {
 @font-face {
   font-family: "GoogleSansRegular";
   src: local("GoogleSansRegular"),
-    url(../assets/google_sans/GoogleSans-Regular.ttf)format("truetype");
+    url(../assets/google_sans/GoogleSans-Regular.ttf) format("truetype");
 }
 .homework-container {
   background-color: white;
   border: 1px solid grey;
   border-radius: 10px;
-  padding: 20px;
-}
-
-.homework-content {
-  overflow: hidden;
-}
-
-.homework-content a {
-  display: inline;
-  text-overflow: ellipsis !important;
-  color: black;
+  padding: 20px 10px 20px 10px;
 }
 </style>

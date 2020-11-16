@@ -133,7 +133,8 @@
 
       <div class="my-3">Ödev Tanımı</div>
 
-      <tiptap-vuetify v-model="content" :extensions="extensions" />
+      <quill-editor ref="myTextEditor" v-model="content" :config="editorOption">
+      </quill-editor>
 
       <v-row>
         <v-spacer></v-spacer>
@@ -152,34 +153,15 @@
 </template>
 
 <script>
-import {
-  TiptapVuetify,
-  Heading,
-  Bold,
-  Italic,
-  Strike,
-  Image,
-  Underline,
-  Code,
-  CodeBlock,
-  Paragraph,
-  BulletList,
-  OrderedList,
-  ListItem,
-  Link,
-  Blockquote,
-  HardBreak,
-  HorizontalRule,
-  History,
-} from "tiptap-vuetify";
 import SuccessDialog from "@/components/SuccessDialog";
 import moment from "moment";
 import { mapActions, mapGetters } from "vuex";
+import { quillEditor } from "vue-quill-editor";
 export default {
   name: "AddHomeworkForm",
   components: {
     SuccessDialog,
-    TiptapVuetify,
+    quillEditor,
   },
 
   computed: {
@@ -193,36 +175,6 @@ export default {
     },
     defaultDate() {
       return moment().format("YYYY-MM-DD");
-    },
-
-    extensions() {
-      return [
-        History,
-        Blockquote,
-        Link,
-        Underline,
-        Strike,
-        Image,
-        Italic,
-        ListItem,
-        BulletList,
-        OrderedList,
-
-        [
-          Heading,
-          {
-            options: {
-              levels: [1, 2, 3],
-            },
-          },
-        ],
-        Bold,
-        Code,
-        CodeBlock,
-        HorizontalRule,
-        Paragraph,
-        HardBreak,
-      ];
     },
   },
 
@@ -258,8 +210,8 @@ export default {
       isLoading: false,
       isSent: false,
       requiresFile: false,
-
-      content: ``,
+      editorOption: {},
+      content: "<p>Yeni bir ödev</p>",
     };
   },
 
