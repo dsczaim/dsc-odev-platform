@@ -21,12 +21,12 @@
         }}.
       </template>
       <template v-slot:[`item.homework`]="{ item }">
-        <a :href="`/odevler/${item.homeworkId}`">
+        <router-link :to="`/odevler/${item.homeworkId}`">
           {{ item.homeworkTitle }}
           <span class="text-caption google-sans-regular">
             #{{ item.homeworkId.substring(item.homeworkId.length - 4) }}
           </span>
-        </a>
+        </router-link>
       </template>
       <template v-slot:[`item.createdAt`]="{ item }">
         {{ item.createdAt ? timestampToDate(item.createdAt.toDate()) : "..." }}

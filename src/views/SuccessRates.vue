@@ -11,7 +11,11 @@
         <v-radio value="name">
           <template v-slot:label> İsim </template>
         </v-radio>
-        <v-radio v-for="id in getTeamIds" :key="id" :value="id">
+        <v-radio
+          v-for="id in getTeamIds.filter((tid) => tid != 'dsc')"
+          :key="id"
+          :value="id"
+        >
           <template v-slot:label>
             {{ getTeamNameFromId(id) }}
           </template>

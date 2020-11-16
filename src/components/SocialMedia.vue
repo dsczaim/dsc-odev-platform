@@ -59,10 +59,8 @@
           href="https://www.linkedin.com/in/nurettin-resul-a3a0141a7/"
           :style="
             hover
-              ? 'color: purple; ' +
-                'text-decoration: none; grey; font-size: 12px; '
-              : 'color: grey; ' +
-                'text-decoration: none; grey; font-size: 12px; '
+              ? 'color: purple; ' + ' grey; font-size: 12px; '
+              : 'color: grey; ' + ' grey; font-size: 12px; '
           "
           class="mt-4 google-sans-regular"
         >

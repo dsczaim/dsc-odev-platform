@@ -10,7 +10,10 @@ const actions = {
   bindUsers: firestoreAction((context) => {
     return context.bindFirestoreRef(
       "users",
-      firestore.collection("users").where("role", "==", "member")
+      firestore
+        .collection("users")
+        .where("role", "==", "member")
+        .where("fullName", "!=", null)
     );
   }),
 };

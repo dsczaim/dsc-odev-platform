@@ -7,6 +7,11 @@
       @submit.prevent="update"
       class="my-0"
     >
+      <div class="google-sans-regular px-8 mb-3">
+        İsminizi ve soyisminizi okulumuzun sisteminde kayıtlı olan şekilde
+        girin. Tam isminizi girmemeniz ya da yanlış isim girmeniz durumunda sizi
+        tanıyamayacağımızdan uygulamadan yararlanamayacaksınız.
+      </div>
       <v-row justify="center" style="padding: 0">
         <v-col cols="12" md="6" class="my-0" style="margin: 0">
           <v-text-field
@@ -15,7 +20,7 @@
             v-model="fullName"
             :rules="fullNameRules"
             label="Tam isminiz (Zorunlu)"
-            hint="Tam isminizi girin ve ok sembolüne tıklayın"
+            hint="Tam isminizi girin ve ok sembolüne tıklayın. "
             prepend-inner-icon="mdi-account"
             append-icon="mdi-arrow-right"
             @click:append="update()"

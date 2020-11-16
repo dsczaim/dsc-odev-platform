@@ -35,7 +35,10 @@
         {{ item.createdAt ? timestampToDate(item.createdAt.toDate()) : "..." }}
       </template>
       <template v-slot:[`item.file`]="{ item }">
-        <a v-if="canSeeDetails(item)" :href="getFileURL(item)">Ödevi indir</a>
+        <div v-if="item.fileURL">
+          <a v-if="canSeeDetails(item)" :href="getFileURL(item)">Ödevi indir</a>
+          <div v-else>{{ getFileURL(item) }}</div>
+        </div>
         <div v-else>
           {{ getFileURL(item) }}
         </div>

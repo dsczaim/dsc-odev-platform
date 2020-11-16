@@ -1,7 +1,7 @@
 import { firestoreAction } from "vuexfire";
 import firestore from "@/firebase/firestore";
 import firebaseStorage from "@/firebase/firebaseStorage";
-import firebase from "firebase";
+import firebase from "firebase/app";
 import { v4 as uuidv4 } from "uuid";
 
 const state = {

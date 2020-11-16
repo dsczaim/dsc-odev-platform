@@ -13,7 +13,7 @@ export default [
   },
   {
     icon: "mdi-chart-bar",
-    text: "Başarı Puanları",
+    text: "Başarı Sıralaması",
     route: "/siralama",
     role: "member",
   },

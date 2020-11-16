@@ -1,4 +1,4 @@
-import firebase from "firebase";
+import firebase from "firebase/app";
 import firebaseAuth from "@/firebase/auth";
 import firestore from "@/firebase/firestore";
 import router from "../../router";
@@ -67,10 +67,23 @@ const actions = {
                 _user.score = doc.data().score;
                 commit("setUser", { _user });
               } else {
-                throw new Error("No such document!");
+                throw new Error("no-such-document");
               }
             })
-            .catch((err) => console.log(err));
+            .catch((err) => {
+              if (err.message === "no-such-document") {
+                _user.role = rootState.teamConfig.roles.member;
+                _user.score = {
+                  dtb: 0,
+                  flt: 0,
+                  iot: 0,
+                  mcl: 0,
+                  qtc: 0,
+                };
+                dispatch("writeUser", _user);
+                commit("setUser", _user);
+              }
+            });
         }
       })
       .catch((err) => {
@@ -150,14 +163,3 @@ export default {
   mutations,
   namespaced: true,
 };
-
-// const updateUser = ({ uid, photoURL }) => {
-//   firestore
-//     .collection("users")
-//     .doc(uid)
-//     .update({ photoURL })
-//     .then()
-//     .catch((err) => {
-//       console.log(err);
-//     });
-// };

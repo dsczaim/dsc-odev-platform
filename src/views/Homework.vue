@@ -3,7 +3,9 @@
     <circular-progress v-if="isLoading" />
     <v-container class="px-xl-10" v-else>
       <homework-details v-if="getHomework" />
-      <div v-else>Bulunamadı</div>
+      <h1 class="google-sans-regular" v-else>
+        💥 Üzgünüz, belirtilen kimliğe sahip bir ödev bulunmamaktadır. 💥
+      </h1>
     </v-container>
   </section>
 </template>
