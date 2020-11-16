@@ -132,7 +132,8 @@
       </v-row>
 
       <div class="my-3">Ödev Tanımı</div>
-      <Vueditor ref="editor"></Vueditor>
+
+      <tiptap-vuetify v-model="content" :extensions="extensions" />
 
       <v-row>
         <v-spacer></v-spacer>
@@ -151,6 +152,26 @@
 </template>
 
 <script>
+import {
+  TiptapVuetify,
+  Heading,
+  Bold,
+  Italic,
+  Strike,
+  Image,
+  Underline,
+  Code,
+  CodeBlock,
+  Paragraph,
+  BulletList,
+  OrderedList,
+  ListItem,
+  Link,
+  Blockquote,
+  HardBreak,
+  HorizontalRule,
+  History,
+} from "tiptap-vuetify";
 import SuccessDialog from "@/components/SuccessDialog";
 import moment from "moment";
 import { mapActions, mapGetters } from "vuex";
@@ -158,6 +179,7 @@ export default {
   name: "AddHomeworkForm",
   components: {
     SuccessDialog,
+    TiptapVuetify,
   },
 
   computed: {
@@ -172,7 +194,38 @@ export default {
     defaultDate() {
       return moment().format("YYYY-MM-DD");
     },
+
+    extensions() {
+      return [
+        History,
+        Blockquote,
+        Link,
+        Underline,
+        Strike,
+        Image,
+        Italic,
+        ListItem,
+        BulletList,
+        OrderedList,
+
+        [
+          Heading,
+          {
+            options: {
+              levels: [1, 2, 3],
+            },
+          },
+        ],
+        Bold,
+        Code,
+        CodeBlock,
+        HorizontalRule,
+        Paragraph,
+        HardBreak,
+      ];
+    },
   },
+
   data() {
     return {
       valid: true,
@@ -205,6 +258,8 @@ export default {
       isLoading: false,
       isSent: false,
       requiresFile: false,
+
+      content: ``,
     };
   },
 
@@ -228,7 +283,7 @@ export default {
         score: parseInt(this.score),
         startDate: this.startDate,
         endDate: this.endDate,
-        description: this.$refs.editor.getContent(),
+        description: this.content,
         shortDesc: this.shortDesc,
         isFileRequired: this.requiresFile,
         teamId: this.userTeamIdFromRole,
@@ -259,6 +314,7 @@ export default {
       return date >= today;
     },
   },
+
   watch: {
     startDate: function (newDate) {
       if (moment(newDate) > moment(this.endDate)) {
@@ -267,7 +323,7 @@ export default {
     },
   },
 
-  mounted() {
+  created() {
     this.startDate = this.endDate = this.defaultDate;
     this.title = `Yeni ${this.userTeamNameFromRole} Ödevi`;
   },
