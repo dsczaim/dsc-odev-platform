@@ -22,6 +22,8 @@ let config = {
     "subscript",
     "superscript",
     "|",
+    "picture",
+    "|",
     "justifyLeft",
     "justifyCenter",
     "justifyRight",
@@ -52,6 +54,8 @@ let config = {
     "1.5rem",
     "2.0rem",
   ],
+  mode: "default",
+  fileUploadUrl: "./",
 };
 
 Vue.use(Vueditor, config);
