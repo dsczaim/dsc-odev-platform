@@ -2,7 +2,7 @@ import { firestoreAction } from "vuexfire";
 import firestore from "@/firebase/firestore";
 import firebaseStorage from "@/firebase/firebaseStorage";
 import firebase from "firebase/app";
-import { v4 as uuidv4 } from "uuid";
+import slugify from "slugify";
 
 const state = {
   attendances: [],
@@ -82,7 +82,7 @@ const actions = {
       .catch((err) => console.log(err));
   },
 
-  giveScore: ({ dispatch }, { homeworkId, userId, score }) => {
+  giveScore: ({ dispatch }, { homeworkId, userId, score, leaderMessage }) => {
     const id = `${homeworkId}-${userId}`;
     const id3 = homeworkId.substring(0, 3);
 
@@ -90,6 +90,7 @@ const actions = {
       .collection("homework_user")
       .doc(id)
       .update({
+        ["leaderMessage"]: leaderMessage,
         ["score"]: {
           [id3]: score,
         },
@@ -173,6 +174,7 @@ const actions = {
         iot: null,
         dsc: null,
       },
+      leaderMessage: null,
       fileURL: fileURL,
       userFullName: userFullName,
       homeworkTitle: homeworkTitle,
@@ -202,7 +204,10 @@ const actions = {
       homeworkTitle,
     }
   ) => {
-    const fileName = `${uuidv4()}.${file.name.split(".").pop()}`;
+    const fileName = `${slugify(userFullName, {
+      replacement: "_",
+      lower: true,
+    })}_${userId.substring(0, 4)}.${file.name.split(".").pop()}`;
 
     return firebaseStorage
       .ref(homeworkId)

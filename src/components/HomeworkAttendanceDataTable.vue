@@ -49,6 +49,9 @@
       <template v-slot:[`item.score`]="{ item }">
         {{ getScore(item) }}
       </template>
+        <template v-slot:[`item.leaderMessage`]="{ item }">
+        {{ getLeaderMessage(item) }}
+      </template>
       <template v-if="getIsAdmin" v-slot:[`item.action`]="{ item }">
         <v-btn icon small @click="passDataToDialoge(item)"
           ><v-icon>mdi-pencil-box</v-icon></v-btn
@@ -91,7 +94,13 @@ export default {
   methods: {
     passDataToDialoge(item) {
       this.$refs.giveScore.item = item;
+      this.$refs.giveScore.leaderMessage = 
+      item.leaderMessage ? item.leaderMessage :   
+      "Tebrik ederim " + item.userFullName + ", harikasın. 🎉" 
+      
       this.giveScoreDialoge = true;
+      this.$refs.giveScore.userDescription = item.description;
+
     },
     timestampToDate(timestamp) {
       return moment(timestamp).locale("tr-TR").format("LLL"); // 14 Kasım 2020 13:23
@@ -125,6 +134,15 @@ export default {
       } else {
         return this.getRandomEmoji();
       }
+    },
+
+    getLeaderMessage(item) {
+      if(this.canSeeDetails(item)) {
+       return item.leaderMessage ? item.leaderMessage : "Yok";
+      } else {
+        return this.getRandomEmoji();
+      }
+      
     },
 
     getDescription(item) {
@@ -185,6 +203,12 @@ export default {
           align: "start",
           sortable: false,
           value: "score",
+        },
+        {
+          text: "Lider Mesajı",
+          align: "start",
+          sortable: false,
+          value: "leaderMessage",
         },
       ];
 

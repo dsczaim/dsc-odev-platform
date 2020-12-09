@@ -32,13 +32,21 @@
         {{ item.createdAt ? timestampToDate(item.createdAt.toDate()) : "..." }}
       </template>
       <template v-slot:[`item.file`]="{ item }">
-        <a :href="getFileURL(item)">Ödevi indir</a>
-      </template>
+          <div v-if="item.fileURL">
+            <a :href="getFileURL(item)">Ödevi indir</a>
+          </div>
+          <div v-else>
+            {{ getFileURL(item) }}
+          </div>
+        </template>
       <template v-slot:[`item.description`]="{ item }">
         {{ getDescription(item) }}
       </template>
       <template v-slot:[`item.score`]="{ item }">
         {{ getScore(item) }}
+      </template>
+       <template v-slot:[`item.leaderMessage`]="{ item }">
+        {{ getLeaderMessage(item) }}
       </template>
     </v-data-table>
   </div>
@@ -88,6 +96,10 @@ export default {
       return item.score[id3] ? item.score[id3] : "Yok";
     },
 
+    getLeaderMessage(item) {
+    return item.leaderMessage ? item.leaderMessage : "Yok"; 
+    },
+
     getDescription(item) {
       return item.description ? item.description : "Yok";
     },
@@ -95,6 +107,8 @@ export default {
     getIsScorable() {
       return moment(this.getHomework.endDate) > this.getToday;
     },
+
+    
   },
   computed: {
     ...mapGetters("auth", ["getIsAdmin", "getUserId"]),
@@ -138,6 +152,12 @@ export default {
           sortable: false,
           value: "score",
         },
+        {
+          text: "Lider Mesajı",
+          align: "start",
+          sortable: false,
+          value: "leaderMessage"
+        }
       ];
 
       return headers;

@@ -8,8 +8,10 @@
       >
         Gönderilen Ödevler
       </v-expansion-panel-header>
+
       <v-expansion-panel-content color="grey lighten-4">
         <v-divider class="mb-4"></v-divider>
+        <div class="caption "><span class="font-italic"> *Katılımcılarımızın gizliliğini korumak için yalnızca kendi kaydınızı görmenize izin veriyoruz.</span> 😇</div>
         <homework-attendance-data-table :attendanceData="attendanceData" />
       </v-expansion-panel-content>
     </v-expansion-panel>
