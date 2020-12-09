@@ -84,4 +84,10 @@ export default {
   border-radius: 10px;
   padding: 20px 10px 20px 10px;
 }
+
+.ql-editor .ql-video {
+  display: block;
+  width: 100%;
+  height: 420px;
+}
 </style>
